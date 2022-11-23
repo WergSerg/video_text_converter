@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Конвертуля</title>
+
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {# Bootstrap #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 class="main_title">Конвертер видео в текст «Конвертуля»</h1>
+
+            {# Форма для передачи видео #}
+            <div class="col-md-4">
+                <form method="post" action="/convert_video/" enctype="multipart/form-data" id="converter_form">
+                    <div class="input-file-row">
+                        <label class="input-file">
+                            <input type="file" name="file" accept="video/*, audio/*" id="file_select">
+                            <span>Выберите файл</span>
+                        </label>
+                        <div class="input-file-list"></div>
+                    </div>
+                </form>
+            </div>
+
+            {# Форма с текстом #}
+            <div class="col-md-8">
+                <div class="convert_form"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let dt = new DataTransfer();
+
+    $("#file_select").on('change', function(){
+        $('#converter_form').submit();
+    })
+
+    $('.input-file input[type=file]').on('change', function(){
+        let $files_list = $(this).closest('.input-file').next();
+        $files_list.empty();
+
+        for(let i = 0; i < this.files.length; i++){
+            let file = this.files.item(i);
+            dt.items.add(file);
+
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function(){
+                let new_file_input = '<div class="input-file-list-item">' +
+                    '<span class="input-file-list-name">' + file.name + '</span>'
+                '</div>';
+                $files_list.append(new_file_input);
+            }
+        };
+        this.files = dt.files;
+    });
+</script>
