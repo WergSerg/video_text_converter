@@ -44,9 +44,10 @@ class VideoToTextConverter:
 
         return ceil(frames_duration / FRAME_SIZE_IN_SECONDS)
 
-    def __get_text_for_minute(
-            self, recognizer: Recognizer, minute: int) -> str:
+    def __get_text_for_minute(self, minute: int) -> str:
         """Выдает текст из .wav файла для конкретной минуты"""
+
+        recognizer = Recognizer()
 
         with AudioFile(WAV_FILE_NAME) as file:
             audio_from_file = recognizer.record(
@@ -66,11 +67,10 @@ class VideoToTextConverter:
         """Возвращает текст из .wav файла для каждой минуты"""
 
         total_minutes = self.__get_audio_total_minutes()
-        recognizer = Recognizer()
         minute_and_text = {}
 
         for minute in range(total_minutes):
-            text = self.__get_text_for_minute(recognizer, minute)
+            text = self.__get_text_for_minute(minute)
 
             minute_and_text[f"С {minute}-й по {minute + 1}-ю минуту"] = text
 
