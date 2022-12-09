@@ -2,25 +2,20 @@
 
 from os import remove
 
-from fastapi import UploadFile
-
+from app.config import TEMPORARY_FILE_NAME
 from app.converter import VideoToTextConverter
-from app.utils import (
-    get_temporary_file_name,
-    write_content_from_file_to_temporary_file,
-)
+from app.utils import get_recognized_text_in_html
 
 
-async def get_text_from_video_file(file: UploadFile):
-    """Выдает текст из видео-файла"""
+async def get_text_from_video_file(file_body: bytes):
+    """Создает файл, читает из него текст и удаляет"""
 
-    temporary_file_name = get_temporary_file_name(file)
+    with open(TEMPORARY_FILE_NAME, 'wb') as file:
+        file.write(file_body)
 
-    await write_content_from_file_to_temporary_file(file, temporary_file_name)
-
-    converter = VideoToTextConverter(temporary_file_name)
+    converter = VideoToTextConverter(TEMPORARY_FILE_NAME)
     recognized_text = converter.get_recognized_text()
 
-    remove(temporary_file_name)
+    remove(TEMPORARY_FILE_NAME)
 
-    return recognized_text
+    return get_recognized_text_in_html(recognized_text)

@@ -11,3 +11,5 @@ APP_PATH = "app/"
 STATIC_PATH = APP_PATH + "static"
 
 TEMPLATES_PATH = APP_PATH + "templates"
+
+TEMPORARY_FILE_NAME = "app/file.mp4"

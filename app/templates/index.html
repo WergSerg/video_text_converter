@@ -37,7 +37,7 @@
 
             {# Форма с текстом #}
             <div class="col-md-8">
-                <div class="convert_form"></div>
+                <div id="convert_form" class="convert_form"></div>
             </div>
         </div>
     </div>
@@ -45,10 +45,6 @@
 </html>
 <script>
     let dt = new DataTransfer();
-
-    $("#file_select").on('change', function(){
-        $('#converter_form').submit();
-    })
 
     $('.input-file input[type=file]').on('change', function(){
         let $files_list = $(this).closest('.input-file').next();
@@ -68,5 +64,28 @@
             }
         };
         this.files = dt.files;
+    });
+
+    $("#file_select").on('change', function(){
+        let formData = new FormData();
+        let file = $('#file_select')[0].files[0];
+
+        formData.append('file', file);
+
+        $.ajax({
+            url: "/convert_video/",
+            type: "post",
+            data: formData,
+            method: "post",
+            contentType: false,
+            processData: false,
+            contentType: "application/json",
+            success: function(data) {
+                $('#convert_form').html(data.text)
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                alert('Произошла ошибка!')
+            }
+        });
     });
 </script>
