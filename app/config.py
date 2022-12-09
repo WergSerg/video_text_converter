@@ -4,9 +4,9 @@ FRAME_SIZE_IN_SECONDS = 60
 
 TEXT_LANGUAGE = "ru"
 
-WAV_FILE_NAME = "file.wav"
-
 APP_PATH = "app/"
+
+WAV_FILE_NAME = APP_PATH + "file.wav"
 
 STATIC_PATH = APP_PATH + "static"
 
