@@ -13,7 +13,8 @@ body {
   border: 4px double #412919;
   border-radius: 12px;
   padding: 10px;
-  color: #FFF; }
+  color: #FFF;
+  overflow-y: scroll; }
 
 .main_title {
   text-align: center;

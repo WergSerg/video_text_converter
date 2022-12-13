@@ -2,7 +2,7 @@
 
 FRAME_SIZE_IN_SECONDS = 60
 
-TEXT_LANGUAGE = "ru"
+TEXT_LANGUAGE = "ru-RU"
 
 APP_PATH = "app/"
 
