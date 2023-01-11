@@ -1,0 +1,77 @@
+$green: rgba(128, 210, 7, .8);
+$white: #FFF;
+$black: #000;
+$light-green: #59be6e;
+$dark-green: #2E703A;
+$brown: #412919;
+
+*::selection{
+    background-color: $light-green;
+    color: $white;
+}
+
+body {
+    background-color: $black !important;
+    color: $white !important;
+}
+
+.convert_form{
+    background-color: $green;
+    width: 100%;
+    height: 700px;
+    border: 4px double $brown;
+    border-radius: 12px;
+    padding: 10px;
+    color: $white;
+    overflow-y: scroll;
+}
+
+.main_title{
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.input-file {
+    & span {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        text-decoration: none;
+        font-size: 14px;
+        vertical-align: middle;
+        color: $white;
+        text-align: center;
+        border-radius: 4px;
+        background-color: $green;
+        color: $white;
+        line-height: 22px;
+        height: 40px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        border: none;
+        margin: 0;
+        transition: background-color 0.2s;
+    }
+
+    & input[type=file] {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+        display: block;
+        width: 0;
+        height: 0;
+
+        &:focus + span {
+            box-shadow: 0 0 0 0.1rem $brown;
+        }
+    }
+
+    &:hover span {
+        background-color: $light-green;
+    }
+
+    &:active span {
+        background-color: $dark-green;
+    }
+}

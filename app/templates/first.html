@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+    <title>Конвертуля</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {# Bootstrap #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="static/styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <label class="input-file">
+<!--        <span class="input-file-text" type="text"></span>-->
+        <input type="file" onchange="upload(this.files[0])">
+        <span class="input-file-btn">Выберите файл</span>
+    </label>
+    <div >Загрузка файла:  <span id="download_bar"></span></div>
+     <div id="myProgress">
+        <div id="myBar">
+            <div id="lable">0%</div>
+        </div>
+    </div>
+    <div id="process" >Конвернтация файла в аудио: <span id="process_bar" ></span>
+    </div>
+    <div class="preloader" id ="preloader" title = "может занять продолжительное время"> Конвернтация файла в аудио:
+            <div id="fountainG" title = "может занять продолжительное время">
+        <div id="fountainG_1" class="fountainG"></div>
+        <div id="fountainG_2" class="fountainG"></div>
+        <div id="fountainG_3" class="fountainG"></div>
+        <div id="fountainG_4" class="fountainG"></div>
+        <div id="fountainG_5" class="fountainG"></div>
+        <div id="fountainG_6" class="fountainG"></div>
+        <div id="fountainG_7" class="fountainG"></div>
+        <div id="fountainG_8" class="fountainG"></div>
+            </div>
+                 </div>
+    <div id="text">
+        Текст
+        <span id="get_text"></span>
+                <span class="loader" id ="loader" title = "может занять продолжительное время">
+                    <span id="fountG1" title = "может занять продолжительное время">
+                        <div id="fountG1_1" class="fountG1"></div>
+                        <div id="fountG1_2" class="fountG1"></div>
+                        <div id="fountG1_3" class="fountG1"></div>
+                        <div id="fountG1_4" class="fountG1"></div>
+                        <div id="fountG1_5" class="fountG1"></div>
+                        <div id="fountG1_6" class="fountG1"></div>
+                        <div id="fountG1_7" class="fountG1"></div>
+                        <div id="fountG1_8" class="fountG1"></div>
+                     </span>
+                </span>
+                <div id="convert_form" ></div>
+            </div>
+
+<script type="text/javascript">
+    let preloader = document.getElementById('preloader');
+    let loader = document.getElementById('loader');
+    let obr= document.getElementById('process');
+    let text= document.getElementById('text');
+    obr.style.display = 'none';
+    preloader.style.display = 'none';
+    text.style.display = 'none';
+
+    function clouse(){
+        let xhr = new XMLHttpRequest();
+        xhr.open("get", "/cancel/");
+        xhr.onloadend = function() {
+            if (xhr.status == 200){
+                loader.style.display = 'none';
+            }
+        }
+        xhr.send();
+
+    }
+
+     async function c1(total_time){
+
+        for (let min = 0; min < total_time; min++) {
+            let formData = new FormData();
+            formData.append('min', min);
+            await $.ajax({
+                url: "/get_text/",
+                type: "post",
+                data: formData,
+                method: "post",
+                contentType: false,
+                processData: false,
+                contentType: "application/json",
+                success: function(data) {
+                    $('#convert_form').append(data.text+"<p>");
+                    $('#get_text').text('Минуты: '+(min+1)+' из '+total_time)
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log(`Не могу конвертировать минуту ${min}`)
+                }
+            });
+        }
+        clouse()
+    };
+
+     function b(){
+        let xhr = new XMLHttpRequest();
+        xhr.open("get", "/get_total_min/");
+         xhr.send();
+        xhr.onload = function() {
+            preloader.style.display = 'none';
+            obr.style.display = 'flex';
+            $('#process_bar').text(' обработано');
+            let total_time = xhr.response;
+            text.style.display = 'block';
+            $('#get_text').text('Минуты: 0 из 0')
+            c1(total_time);
+<!--        clouse()-->
+        };
+
+
+    };
+
+
+     function a(){
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "/create_file/");
+        xhr.send();
+         b();
+    };
+
+     function upload(file) {
+      let xhr = new XMLHttpRequest();
+      var formData = new FormData();
+      var elem = document.getElementById('myBar');
+        formData.append('file', file);
+      xhr.upload.onprogress = function(event) {
+        let proc= Math.ceil(100/(event.total/ event.loaded))
+        elem.style.width=proc+'%'
+        $('#lable').text(proc*1 +'%')
+        $('#download_bar').text(`${event.loaded}/${event.total}`);
+      };
+      $('#download_bar').text("Успех");
+      xhr.onloadend = function() {
+        if (xhr.status == 200) {
+          preloader.style.display = 'flex';
+          a();
+        } else {
+          $('#download_bar').text("Ошибка " + this.status);
+        }
+      };
+      xhr.open("POST", "/download_file/");
+      xhr.send(formData);
+    };
+
+</script>
+</body>
+</html>
+
+
