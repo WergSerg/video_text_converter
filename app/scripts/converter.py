@@ -22,16 +22,18 @@ class VideoToTextConverter:
 
     def __init__(self, file_path: str):
         """Создает .wav файл и записывает в него аудио из видео-файла"""
+        self.WAV_FILE_NAME=file_path.split('.')[0]+'.wav'
         self.TEMPORARY_FILE_NAME=file_path
         audio = AudioFileClip(file_path)
-        audio.write_audiofile(WAV_FILE_NAME)
+        audio.write_audiofile(self.WAV_FILE_NAME)
+        remove(self.TEMPORARY_FILE_NAME)
 
     def get_text_for_minute(self, minute: int) -> str:
         """Выдает текст из .wav файла для конкретной минуты"""
 
         recognizer = Recognizer()
 
-        with AudioFile(WAV_FILE_NAME) as file:
+        with AudioFile(self.WAV_FILE_NAME) as file:
             audio_from_file = recognizer.record(
                 file,
                 offset=minute * FRAME_SIZE_IN_SECONDS,
@@ -51,7 +53,7 @@ class VideoToTextConverter:
     def get_audio_total_minutes(self) -> int:
         """Возвращает длительность .wav файла в минутах"""
 
-        wav_file = open_wav(WAV_FILE_NAME, "r")
+        wav_file = open_wav(self.WAV_FILE_NAME, "r")
 
         with closing(wav_file) as file:
             frames_amount = file.getnframes()
@@ -62,7 +64,5 @@ class VideoToTextConverter:
         return ceil(frames_duration / FRAME_SIZE_IN_SECONDS)
 
     def close(self) -> None:
-        """Закрывает конвертер - удаляет видео и .wav файлы"""
-
-        remove(self.TEMPORARY_FILE_NAME)
-        remove(WAV_FILE_NAME)
+        """Закрывает конвертер - удаляет .wav файлы"""
+        remove(self.WAV_FILE_NAME)

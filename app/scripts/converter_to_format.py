@@ -10,9 +10,11 @@ class converter:
 
     def _get_file_format(self) -> str:
         if self.file_name is not None:
-            return self.file_name.split('.')[-1]
+            # return self.file_name.split('.')[-1]
+            return self.file_name
         else:
-            return (self.binary_string.decode(errors='ignore').split('"')[3].split('.')[1])
+            # return (self.binary_string.decode(errors='ignore').split('"')[3].split('.')[1])
+            return (self.binary_string.decode(errors='ignore').split('"')[3])
 
 
     def _convert(self):
