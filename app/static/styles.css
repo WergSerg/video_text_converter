@@ -54,6 +54,7 @@ body {
 .input-file:active span {
   background-color: #2E703A; }
 
+
 /*# sourceMappingURL=styles.css.map */
 
 #fountG1{
@@ -446,7 +447,7 @@ body {
 	display: block;
 	float: left;
 	box-sizing: border-box;
-	width: 200px;
+	width: 400px;
 	border-radius: 6px 0px 0 6px;
 	border: 1px solid #ddd;
 }

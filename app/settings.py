@@ -10,4 +10,4 @@ STATIC_PATH = APP_PATH + "static"
 
 TEMPLATES_PATH = APP_PATH + "templates"
 
-TEMPORARY_FILE_NAME = "app/files/file."
+TEMPORARY_FILE_NAME = "app/files/"
