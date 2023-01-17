@@ -434,13 +434,22 @@ body {
     color: white;
 }
 
+.FileName{
+
+	margin: 10px 0;
+	position: relative;
+	display: inline-block;
+}
+
 /*upload*/
 .input-file {
+
+	margin: 10px 0;
 	position: relative;
 	display: inline-block;
 }
 .input-file-text {
-	padding: 0 10px;
+	padding: 10px 10px;
 	line-height: 40px;
 	text-align: left;
 	height: 40px;
@@ -468,7 +477,6 @@ position: relative;
 	padding: 10px 20px;
 	box-sizing: border-box;
 	border: none;
-	margin: 0;
 	transition: background-color 0.2s;
 }
 .input-file input[type=file] {
@@ -497,3 +505,4 @@ position: relative;
 .input-file input[type=file]:disabled + .input-file-btn {
 	background-color: #eee;
 }
+

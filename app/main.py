@@ -23,8 +23,8 @@ async def download_text(file: UploadFile):
     convert = converter(file_name=file_name, binary_string=binary_string)
     global TEMP_FILE_NAME
     TEMP_FILE_NAME = convert.get_temporary_file_name()
-    text='success'
-    return JSONResponse(text)
+
+    return JSONResponse(file_name)
 
 
 @app.post('/create_file/')

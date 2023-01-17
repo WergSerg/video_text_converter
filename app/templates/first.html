@@ -19,11 +19,13 @@
 </head>
 
 <body>
-    <label class="input-file">
+
+    <label class="input-file" id="button">
 <!--        <span class="input-file-text" type="text"></span>-->
         <input type="file" onchange="upload(this.files[0])">
         <span class="input-file-btn">Выберите файл</span>
     </label>
+    <div class='FileName' id="file_name">файл:  <span id="file-name"></span> </div>
     <div >Загрузка файла:  <span id="download_bar"></span></div>
      <div id="myProgress">
         <div id="myBar">
@@ -67,6 +69,9 @@
     let loader = document.getElementById('loader');
     let obr= document.getElementById('process');
     let text= document.getElementById('text');
+    let button = document.getElementById('button');
+    let fileName = document.getElementById('file_name');
+    fileName.style.display = 'none';
     obr.style.display = 'none';
     preloader.style.display = 'none';
     text.style.display = 'none';
@@ -80,7 +85,7 @@
             }
         }
         xhr.send();
-
+        button.style.display = 'flex';
     }
 
      async function c1(total_time){
@@ -135,6 +140,8 @@
     };
 
     async function upload(file) {
+        $('#convert_form').text('')
+        fileName.style.display = 'none';
       let xhr = new XMLHttpRequest();
       var formData = new FormData();
       var elem = document.getElementById('myBar');
@@ -148,7 +155,10 @@
       $('#download_bar').text("Успех");
       xhr.onloadend = function() {
         if (xhr.status == 200) {
+          fileName.style.display = 'flex';
           preloader.style.display = 'flex';
+          button.style.display = 'none';
+           $('#file-name').text(' '+ this.response);
           a();
         } else {
           $('#download_bar').text("Ошибка " + this.status);
